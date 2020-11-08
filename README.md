@@ -3,23 +3,23 @@ This is a DevOps ass. includes a presentation of the project and its implementat
 
 1. We’ll need to have the following resources installed to be able to follow along with the next steps:
 
-o	Terraform
-o	kops
-o	kubectl
-o	AWS CLI
+o Terraform
+o kops
+o kubectl
+o AWS CLI
 
-2.	We will be using the following GitHub repository: https://github.com/nclouds/generalized/tree/rogue_one/terraform/terraform-kops. We’ll clone it to our machines with the following command:
+2. We will be using the following GitHub repository: https://github.com/nclouds/generalized/tree/rogue_one/terraform/terraform-kops. We’ll clone it to our machines with the following command:
   >> git clone https://github.com/nclouds/generalized.git --branch rogue_one --depth 1
 
 Then we will use the cd command to move into the right directory:
   >> cd generalized/terraform/terraform-kops/
 
-3.	We need to create a couple of AWS resources, so let’s log in to the console and create the following:
-o	Amazon Simple Storage Service (Amazon S3) bucket: This will be used to store Terraform state files.
-o	Amazon DynamoDB table: This will be used to manage locks on the Terraform state files.
+3. We need to create a couple of AWS resources, so let’s log in to the console and create the following:
+o Amazon Simple Storage Service (Amazon S3) bucket: This will be used to store Terraform state files.
+o Amazon DynamoDB table: This will be used to manage locks on the Terraform state files.
 The Amazon S3 bucket and Amazon DynamoDB table need to be in the same AWS Region and can have any name you want. Be sure to keep them handy as we will be using those later. The only restriction is that the Amazon DynamoDB table must have a partition key named "LockID".
 
-4.	Now that we have those resources set up, we can continue. Make a backend.tf file using the template provided in the repository.
+4. Now that we have those resources set up, we can continue. Make a backend.tf file using the template provided in the repository.
 cp backend.tf.example backend.tf
 In this file, you need to input the information about your Amazon S3 bucket and Amazon DynamoDB table.
 
@@ -34,11 +34,11 @@ In this file, you need to input the information about your Amazon S3 bucket and 
       }
       }
 
-5.	We will create an environment config file based on the template provided in the repository.
+5. We will create an environment config file based on the template provided in the repository.
   >>	cp config/env.tfvars.example <env_name>.tfvars
-  >>  export env=<env_name>
+  >>	export env=<env_name>
 
-7.	Fill in the missing values in config/test.tfvars. After doing so it should look something like this:
+7. Fill in the missing values in config/test.tfvars. After doing so it should look something like this:
       environment   = "test"
       cluster_name  = "nclouds"
       region        = "us-west-2"
@@ -61,20 +61,73 @@ In this file, you need to input the information about your Amazon S3 bucket and 
       master_node_type = "t3.medium"
 
 
-8.	Run 
+8. Run 
   >>  terraform init.
 
     
-9.	We are now ready to execute a Terraform plan that will let us know about all the resources that Terraform will create for us.
+9. We are now ready to execute a Terraform plan that will let us know about all the resources that Terraform will create for us.
   >>	terraform plan -var-file=config/${env}.tfvars
 	
-10.	Now that we have confirmed that the plan command works, we are ready for terraform apply. 
+10. Now that we have confirmed that the plan command works, we are ready for terraform apply. 
   >>   terraform apply -var-file=config/${env}.tfvars
   
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
   
   NOW we will be using Ansible as our deployment tool:
   
+1. Install Python 3, Ansible, and the openshift module: 
+  >>	sudo apt update && sudo apt install -y python3 && sudo apt install -y python3-pip && sudo pip3 install ansible && sudo pip3 install openshift
 
-    
+2. Pip installs binaries under a hidden directory in the user’s home folder. We need to add this directory to the $PATH variable: 
+  >>	echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc && . ~/.bashrc
+
+3. Install the Ansible role necessary for deploying a Jenkins instance: 
+  >>	ansible-galaxy install geerlingguy.jenkins
+
+4. Install the Docker role: 
+  >>	ansible-galaxy install geerlingguy.docker
+
+5. Create a playbook.yaml file and add the following lines:
+
+		- name: Deploy Jenkins CI
+		hosts: jenkins_server
+		remote_user: vagrant
+		become: yes
+
+		roles:
+		  - geerlingguy.repo-epel
+		  - geerlingguy.jenkins
+		  - geerlingguy.git
+		  - tecris.maven
+		  - geerlingguy.ansible
+
+		- name: Deploy Nexus Server
+		hosts: nexus_server
+		remote_user: vagrant
+		become: yes
+
+		roles:
+		  - geerlingguy.java
+		  - savoirfairelinux.nexus3-oss
+
+		- name: Deploy Sonar Server
+		hosts: sonar_server
+		remote_user: vagrant
+		become: yes
+
+		roles:
+		  - wtanaka.unzip
+		  - zanini.sonar
+
+		- name: On Premises CentOS
+		hosts: app_server
+		remote_user: vagrant
+		become: yes
+
+		roles:
+		  - jenkins-keys-config
+
+6. Run the playbook through the following command: 
+  >>	ansible-playbook playbook.yaml.
  
+7. Jenkins should be installed. And now we can create our Jenkins Pipeline job 
