@@ -39,8 +39,8 @@ In this file, you need to input the information about your Amazon S3 bucket and 
   >>	cp config/env.tfvars.example test.tfvars
   >>	export env=test
 
-7. Fill in the missing values in "config/test.tfvars":
-   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/config/test.tfvars
+7. "config/test.tfvars":   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/config/test.tfvars
+
 8. Run 
   >>  terraform init.
 
@@ -53,7 +53,7 @@ In this file, you need to input the information about your Amazon S3 bucket and 
   
   -----------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  NOW we will be using Ansible as our deployment tool:
+  NOW we will be using Ansible as our change managment tool:
   
 1. Installing Python 3, Ansible, and the openshift module: 
   >>	sudo apt update && sudo apt install -y python3 && sudo apt install -y python3-pip && sudo pip3 install ansible && sudo pip3 install openshift
