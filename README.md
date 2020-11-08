@@ -75,59 +75,24 @@ In this file, you need to input the information about your Amazon S3 bucket and 
   
   NOW we will be using Ansible as our deployment tool:
   
-1. Install Python 3, Ansible, and the openshift module: 
+1. Installing Python 3, Ansible, and the openshift module: 
   >>	sudo apt update && sudo apt install -y python3 && sudo apt install -y python3-pip && sudo pip3 install ansible && sudo pip3 install openshift
 
 2. Pip installs binaries under a hidden directory in the user’s home folder. We need to add this directory to the $PATH variable: 
   >>	echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc && . ~/.bashrc
 
-3. Install the Ansible role necessary for deploying a Jenkins instance: 
+3. Installing the Ansible role necessary for deploying a Jenkins instance: 
   >>	ansible-galaxy install geerlingguy.jenkins
 
 4. Install the Docker role: 
   >>	ansible-galaxy install geerlingguy.docker
 
-5. Create a playbook.yaml file and add the following lines:
-
-		- name: Deploy Jenkins CI
-		hosts: jenkins_server
-		remote_user: vagrant
-		become: yes
-
-		roles:
-		  - geerlingguy.repo-epel
-		  - geerlingguy.jenkins
-		  - geerlingguy.git
-		  - tecris.maven
-		  - geerlingguy.ansible
-
-		- name: Deploy Nexus Server
-		hosts: nexus_server
-		remote_user: vagrant
-		become: yes
-
-		roles:
-		  - geerlingguy.java
-		  - savoirfairelinux.nexus3-oss
-
-		- name: Deploy Sonar Server
-		hosts: sonar_server
-		remote_user: vagrant
-		become: yes
-
-		roles:
-		  - wtanaka.unzip
-		  - zanini.sonar
-
-		- name: On Premises CentOS
-		hosts: app_server
-		remote_user: vagrant
-		become: yes
-
-		roles:
-		  - jenkins-keys-config
+5. Creating a "playbook.yaml" file and add the following lines:
+  https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/playbook.yaml
+		
 
 6. Run the playbook through the following command: 
   >>	ansible-playbook playbook.yaml.
  
-7. Jenkins should be installed. And now we can create our Jenkins Pipeline job 
+7. Jenkins should be installed. And now we can create our Jenkins Pipeline using Groovy scripting jenkins filein the following ripo.
+   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/Groovy_scripting_Jenkins_File
