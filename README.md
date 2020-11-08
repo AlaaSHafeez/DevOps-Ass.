@@ -20,7 +20,8 @@ o Amazon DynamoDB table: This will be used to manage locks on the Terraform stat
 The Amazon S3 bucket and Amazon DynamoDB table need to be in the same AWS Region and can have any name you want. Be sure to keep them handy as we will be using those later. The only restriction is that the Amazon DynamoDB table must have a partition key named "LockID".
 
 4. Now that we have those resources set up, we can continue. Make a backend.tf file using the template provided in the repository.
-cp backend.tf.example backend.tf
+ >>	cp backend.tf.example backend.tf
+ 
 In this file, you need to input the information about your Amazon S3 bucket and Amazon DynamoDB table.
 
 	    terraform {
