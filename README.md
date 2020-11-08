@@ -56,24 +56,17 @@ In this file, you need to input the information about your Amazon S3 bucket and 
   NOW we will be using Ansible as our change managment tool:
   
 1. Installing Python 3, Ansible, and the openshift module: 
-  >>	sudo apt update && sudo apt install -y python3 && sudo apt install -y python3-pip && sudo pip3 install ansible && sudo pip3 install openshift
+  >>	sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+  >>	yum install ansible -y
 
-2. Pip installs binaries under a hidden directory in the user’s home folder. We need to add this directory to the $PATH variable: 
-  >>	echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc && . ~/.bashrc
 
-3. Installing the Ansible role necessary for deploying a Jenkins instance: 
-  >>	ansible-galaxy install geerlingguy.jenkins
-
-4. Install the Docker role: 
-  >>	ansible-galaxy install geerlingguy.docker
-
-5. Creating a "playbook.yaml" file,
+2. Creating a "playbook.yaml" file,
   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/playbook.yaml
 		
 
-6. Run the playbook through the following command: 
+3. Run the playbook through the following command: 
   >>	ansible-playbook playbook.yaml.
   
  
-7. Jenkins should be installed. And now we can create our Jenkins Pipeline using Groovy scripting jenkins file,
+4. Jenkins should be installed. And now we can create our Jenkins Pipeline using Groovy scripting jenkins file,
    https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/Groovy_scripting_Jenkins_File
