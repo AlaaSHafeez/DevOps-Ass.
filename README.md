@@ -87,7 +87,7 @@ In this file, you need to input the information about your Amazon S3 bucket and 
 4. Install the Docker role: 
   >>	ansible-galaxy install geerlingguy.docker
 
-5. Creating a "playbook.yaml" file and add the following lines,
+5. Creating a "playbook.yaml" file,
   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/playbook.yaml
 		
 
