@@ -87,12 +87,13 @@ In this file, you need to input the information about your Amazon S3 bucket and 
 4. Install the Docker role: 
   >>	ansible-galaxy install geerlingguy.docker
 
-5. Creating a "playbook.yaml" file and add the following lines:
+5. Creating a "playbook.yaml" file and add the following lines,
   https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/playbook.yaml
 		
 
 6. Run the playbook through the following command: 
   >>	ansible-playbook playbook.yaml.
+  
  
-7. Jenkins should be installed. And now we can create our Jenkins Pipeline using Groovy scripting jenkins filein the following ripo.
+7. Jenkins should be installed. And now we can create our Jenkins Pipeline using Groovy scripting jenkins file,
    https://github.com/AlaaSHafeez/DevOps-Ass./blob/main/Groovy_scripting_Jenkins_File
